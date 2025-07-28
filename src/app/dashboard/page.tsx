@@ -5,6 +5,7 @@ import { CalendarPlus, User, Stethoscope, Users } from 'lucide-react';
 import { AppointmentCard } from '@/components/appointment-card';
 import { BookingModal } from '@/components/booking-modal';
 import { appointments, doctors } from '@/lib/mock-data';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const upcomingAppointments = appointments.filter(a => a.status === 'Upcoming');
@@ -30,7 +31,7 @@ export default function DashboardPage() {
         {/* Patient Dashboard */}
         <TabsContent value="patient">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-            <Card>
+            <Card className="lg:col-span-1">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle>Upcoming Appointments</CardTitle>
@@ -53,7 +54,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="lg:col-span-1">
               <CardHeader>
                 <CardTitle>Past Visits</CardTitle>
                 <CardDescription>Review your visit history and summaries.</CardDescription>
@@ -132,6 +133,25 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </div>
+            <Card className="mt-6">
+                <CardHeader>
+                    <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-4">
+                     <Button asChild>
+                        <Link href="/dashboard/users">
+                            <Users className="mr-2"/>
+                            Manage Users
+                        </Link>
+                    </Button>
+                     <Button asChild variant="outline">
+                        <Link href="/dashboard/calendar">
+                           <CalendarPlus className="mr-2"/>
+                            View Full Calendar
+                        </Link>
+                    </Button>
+                </CardContent>
+            </Card>
         </TabsContent>
       </Tabs>
     </div>
