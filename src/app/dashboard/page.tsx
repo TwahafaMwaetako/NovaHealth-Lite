@@ -29,7 +29,7 @@ export default function DashboardPage() {
         
         {/* Patient Dashboard */}
         <TabsContent value="patient">
-          <div className="grid gap-6 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
