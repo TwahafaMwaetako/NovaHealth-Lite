@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,8 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Logo } from '@/components/logo';
+import { useState } from 'react';
 
 export default function SignupPage() {
+  const [role, setRole] = useState('Patient');
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="w-full max-w-md mx-auto">
@@ -34,20 +39,24 @@ export default function SignupPage() {
               </div>
               <div className="space-y-4">
                 <Label>I am a...</Label>
-                <RadioGroup defaultValue="patient" className="flex gap-4">
+                <RadioGroup defaultValue="Patient" onValueChange={setRole} className="flex gap-4">
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="patient" id="patient" />
+                    <RadioGroupItem value="Patient" id="patient" />
                     <Label htmlFor="patient" className="font-medium">Patient</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="doctor" id="doctor" />
+                    <RadioGroupItem value="Doctor" id="doctor" />
                     <Label htmlFor="doctor" className="font-medium">Doctor</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Admin" id="admin" />
+                    <Label htmlFor="admin" className="font-medium">Admin</Label>
                   </div>
                 </RadioGroup>
               </div>
 
               <Button type="submit" className="w-full" asChild>
-                 <Link href="/dashboard">Create Account</Link>
+                 <Link href={`/dashboard?role=${role}`}>Create Account</Link>
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">

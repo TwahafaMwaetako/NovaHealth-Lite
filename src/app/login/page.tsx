@@ -1,9 +1,13 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/logo';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useState } from 'react';
 
 function GoogleIcon() {
   return (
@@ -15,6 +19,8 @@ function GoogleIcon() {
 }
 
 export default function LoginPage() {
+  const [role, setRole] = useState('Patient');
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="w-full max-w-md mx-auto">
@@ -41,8 +47,25 @@ export default function LoginPage() {
                 </div>
                 <Input id="password" type="password" required />
               </div>
+               <div className="space-y-3">
+                <Label>Log in as...</Label>
+                <RadioGroup defaultValue="Patient" onValueChange={setRole} className="flex gap-4">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Patient" id="patient" />
+                    <Label htmlFor="patient" className="font-medium">Patient</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Doctor" id="doctor" />
+                    <Label htmlFor="doctor" className="font-medium">Doctor</Label>
+                  </div>
+                   <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Admin" id="admin" />
+                    <Label htmlFor="admin" className="font-medium">Admin</Label>
+                  </div>
+                </RadioGroup>
+              </div>
               <Button type="submit" className="w-full" asChild>
-                <Link href="/dashboard">Login</Link>
+                <Link href={`/dashboard?role=${role}`}>Login</Link>
               </Button>
               <Button variant="outline" className="w-full">
                 <GoogleIcon /> Login with Google

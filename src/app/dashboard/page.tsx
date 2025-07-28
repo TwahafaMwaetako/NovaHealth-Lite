@@ -1,45 +1,78 @@
+'use client';
+
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CalendarPlus, User, Stethoscope, Users, Briefcase, FileText } from 'lucide-react';
+import { CalendarPlus, User, Stethoscope, Users, Briefcase, FileText, ShieldCheck } from 'lucide-react';
 import { AppointmentCard } from '@/components/appointment-card';
 import { BookingModal } from '@/components/booking-modal';
 import { appointments, doctors } from '@/lib/mock-data';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useSearchParams } from 'next/navigation';
 
+type Role = 'Patient' | 'Doctor' | 'Admin';
 
 export default function DashboardPage() {
+  const searchParams = useSearchParams();
+  const role: Role = (searchParams.get('role') as Role) || 'Patient';
+  
   const upcomingAppointments = appointments.filter(a => a.status === 'Upcoming');
   const pastAppointments = appointments.filter(a => a.status === 'Completed');
   
   const today = new Date();
   const todayAppointments = appointments.filter(a => new Date(a.dateTime).toDateString() === today.toDateString());
 
+  const getDefaultTab = () => {
+    switch (role) {
+      case 'Patient':
+        return 'patient';
+      case 'Doctor':
+        return 'doctor';
+      case 'Admin':
+        return 'admin';
+      default:
+        return 'patient';
+    }
+  };
+  
+  const welcomeMessages = {
+    Patient: { title: "Welcome, Patient!", desc: "Manage your appointments and view your health record." },
+    Doctor: { title: "Welcome, Doctor!", desc: "Here is your schedule and patient overview for today." },
+    Admin: { title: "Welcome, Admin!", desc: "Here's the overview of the clinic's activities." },
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold font-headline">Welcome, Admin User!</h1>
-          <p className="text-muted-foreground">Here's your overview of the clinic's activities.</p>
+          <h1 className="text-3xl font-bold font-headline">{welcomeMessages[role].title}</h1>
+          <p className="text-muted-foreground">{welcomeMessages[role].desc}</p>
         </div>
-        <BookingModal />
+        {role === 'Patient' && <BookingModal />}
       </div>
 
-      <Tabs defaultValue="patient" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto">
-          <TabsTrigger value="patient">
-            <User className="mr-2" />
-            Patient View
-          </TabsTrigger>
-          <TabsTrigger value="doctor">
-            <Stethoscope className="mr-2"/>
-            Doctor View
+      <Tabs defaultValue={getDefaultTab()} className="w-full">
+        <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 max-w-lg mx-auto">
+          { (role === 'Patient' || role === 'Admin') &&
+            <TabsTrigger value="patient">
+              <User className="mr-2" />
+              Patient View
             </TabsTrigger>
-          <TabsTrigger value="admin">
-            <Briefcase className="mr-2" />
-            Admin View
-          </TabsTrigger>
+          }
+          { (role === 'Doctor' || role === 'Admin') &&
+            <TabsTrigger value="doctor">
+              <Stethoscope className="mr-2"/>
+              Doctor View
+            </TabsTrigger>
+          }
+          { role === 'Admin' &&
+            <TabsTrigger value="admin">
+              <ShieldCheck className="mr-2" />
+              Admin View
+            </TabsTrigger>
+          }
         </TabsList>
         
         {/* Patient Dashboard */}
