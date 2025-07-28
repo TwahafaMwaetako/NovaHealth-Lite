@@ -2,6 +2,8 @@
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { UserNav } from '@/components/user-nav';
+import { Input } from '../ui/input';
+import { Search } from 'lucide-react';
 
 export function DashboardHeader() {
   return (
@@ -9,8 +11,16 @@ export function DashboardHeader() {
       <div className="md:hidden">
         <SidebarTrigger />
       </div>
+       <div className="relative flex-1">
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="search"
+          placeholder="Search appointments, patients..."
+          className="w-full rounded-lg bg-muted pl-8 md:w-[200px] lg:w-[336px]"
+        />
+      </div>
       <div className="flex w-full items-center justify-end gap-4">
-        {/* You can add a page title or breadcrumbs here */}
+        <UserNav />
       </div>
     </header>
   );

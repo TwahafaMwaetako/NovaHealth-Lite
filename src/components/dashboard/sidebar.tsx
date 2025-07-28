@@ -9,25 +9,19 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
 import {
   Calendar,
   Home,
   Users,
-  BookUser,
-  Clock,
-  ClipboardPen,
   Settings,
   LogOut,
-  CalendarPlus
 } from 'lucide-react';
 import { Logo } from '../logo';
 import { usePathname } from 'next/navigation';
 import { UserNav } from '../user-nav';
+import Link from 'next/link';
 
 export function DashboardSidebar() {
   const pathname = usePathname();
@@ -65,11 +59,20 @@ export function DashboardSidebar() {
 
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
+       <SidebarFooter>
         <SidebarMenu>
-            <SidebarMenuItem>
-                <UserNav />
-            </SidebarMenuItem>
+          <SidebarMenuItem>
+             <SidebarMenuButton href="#" icon={Settings}>
+                Settings
+              </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <Link href="/login" className="w-full">
+              <SidebarMenuButton icon={LogOut} className="w-full text-red-500 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/50 dark:hover:text-red-400">
+                Log out
+              </SidebarMenuButton>
+            </Link>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
