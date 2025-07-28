@@ -28,7 +28,7 @@ It serves **patients**, **doctors**, and **clinic administrators** with clean, r
 | Auth          | Supabase Auth (Email + Google)      |
 | UI Components | shadcn/ui + Lucide Icons            |
 | Notifications | Resend (email), optional Twilio (SMS) |
-| Deployment    | Vercel                              |
+| Deployment    | Netlify                              |
 
 ---
 
