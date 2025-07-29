@@ -5,7 +5,6 @@ import {
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
-  SidebarTrigger,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
@@ -35,7 +34,6 @@ export function DashboardSidebar() {
       <SidebarHeader>
         <div className="flex items-center justify-between">
           <Logo />
-          <SidebarTrigger />
         </div>
       </SidebarHeader>
       <SidebarContent>
