@@ -15,10 +15,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useSearch } from '@/context/search-context';
 
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const { searchQuery } = useSearch();
+
   const weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 1; // Monday
   const startOfTheWeek = startOfWeek(currentDate, { weekStartsOn });
   
@@ -27,9 +30,18 @@ export default function CalendarPage() {
   const nextWeek = () => setCurrentDate(addDays(currentDate, 7));
   const prevWeek = () => setCurrentDate(addDays(currentDate, -7));
   const goToToday = () => setCurrentDate(new Date());
+  
+  const filteredAppointments = appointments.filter(appointment => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return (
+      appointment.patient.name.toLowerCase().includes(lowerCaseQuery) ||
+      appointment.doctor.name.toLowerCase().includes(lowerCaseQuery) ||
+      appointment.doctor.specialization.toLowerCase().includes(lowerCaseQuery)
+    );
+  });
 
   const getAppointmentsForDay = (day: Date) => {
-    return appointments.filter(app => isSameDay(new Date(app.dateTime), day));
+    return filteredAppointments.filter(app => isSameDay(new Date(app.dateTime), day));
   };
 
   return (

@@ -1,3 +1,5 @@
+'use client';
+
 import { PlusCircle, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,8 +21,20 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { users } from '@/lib/mock-data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useSearch } from '@/context/search-context';
 
 export default function UsersPage() {
+  const { searchQuery } = useSearch();
+
+  const filteredUsers = users.filter(user => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return (
+      user.name.toLowerCase().includes(lowerCaseQuery) ||
+      user.email.toLowerCase().includes(lowerCaseQuery) ||
+      user.role.toLowerCase().includes(lowerCaseQuery)
+    );
+  });
+
   const roleVariant = (role: string) => {
     if (role === 'Admin') return 'destructive';
     if (role === 'Doctor') return 'default';
@@ -60,7 +74,7 @@ export default function UsersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-3">

@@ -11,18 +11,29 @@ import { appointments, doctors } from '@/lib/mock-data';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useSearchParams } from 'next/navigation';
+import { useSearch } from '@/context/search-context';
 
 type Role = 'Patient' | 'Doctor' | 'Admin';
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
   const role: Role = (searchParams.get('role') as Role) || 'Patient';
+  const { searchQuery } = useSearch();
+
+  const filteredAppointments = appointments.filter(appointment => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return (
+      appointment.patient.name.toLowerCase().includes(lowerCaseQuery) ||
+      appointment.doctor.name.toLowerCase().includes(lowerCaseQuery) ||
+      appointment.doctor.specialization.toLowerCase().includes(lowerCaseQuery)
+    );
+  });
   
-  const upcomingAppointments = appointments.filter(a => a.status === 'Upcoming');
-  const pastAppointments = appointments.filter(a => a.status === 'Completed');
+  const upcomingAppointments = filteredAppointments.filter(a => a.status === 'Upcoming');
+  const pastAppointments = filteredAppointments.filter(a => a.status === 'Completed');
   
   const today = new Date();
-  const todayAppointments = appointments.filter(a => new Date(a.dateTime).toDateString() === today.toDateString());
+  const todayAppointments = filteredAppointments.filter(a => new Date(a.dateTime).toDateString() === today.toDateString());
 
   const getDefaultTab = () => {
     switch (role) {
