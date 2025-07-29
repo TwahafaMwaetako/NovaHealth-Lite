@@ -25,7 +25,7 @@ export function DashboardHeader() {
         />
       </div>
       <div className="flex w-full items-center justify-end gap-4">
-        <UserNav />
+        {/* UserNav is now in the sidebar footer */}
       </div>
     </header>
   );
