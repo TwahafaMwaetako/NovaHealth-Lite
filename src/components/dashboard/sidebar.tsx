@@ -32,9 +32,7 @@ export function DashboardSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center justify-between">
-          <Logo />
-        </div>
+        <Logo />
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
